@@ -19,7 +19,7 @@ class ParkingSpider(scrapy.Spider):
         t = time.time()
         place_item = ParkingLocationItem()
         for place_i in range(len(places)):
-            place_item['date'] = t
+            place_item['date'] = int(t*1000)
             place_item['location'] = response.xpath(f"((//main/div/div/div/div/table/tbody/tr)[{place_i+1}]/td)[1]/a/text()").get()
             place_item['daily_available'] = conv(response.xpath(f"((//main/div/div/div/div/table/tbody/tr)[{place_i+1}]/td)[2]/div/p[2]/text()").get())
             place_item['daily_free'] = conv(response.xpath(f"((//main/div/div/div/div/table/tbody/tr)[{place_i+1}]/td)[2]/div/p[3]/text()").get())

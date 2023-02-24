@@ -37,7 +37,7 @@ class OpenSearchPipeline:
         # Iterate over indices that exists
         while(self.client.indices.exists(self.index_name)):
             # Test if mapping is the same (if it is return true - no new index needs to be created)
-            if(self.client.indices.get_mapping( self.index_name )[self.index_name] == self.mapping):
+            if(self.client.indices.get_mapping( self.index_name )[self.index_name]["mappings"] == self.mapping["mappings"]):
                 return True
 
             # Construct self.index name with the next index that needs to be checked
@@ -63,9 +63,15 @@ class OpenSearchPipeline:
 class ParkingAvailabilityPipeline(OpenSearchPipeline):
     def __init__(self):
         self.mapping = {
+            "settings" : {
+                "index": {
+                    "number_of_shards" : 1,
+                    "number_of_replicas" : 0
+                }
+            },
             "mappings":{
                 "properties": {
-                    "timestamp": {"type": "float"},
+                    "timestamp": {"type": "date", "format": "epoch_millis"},
                     "location": {"type": "text", "analyzer": "standard"},
                     "daily_available": {"type": "integer"},
                     "daily_free": {"type": "integer"},
