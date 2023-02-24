@@ -72,7 +72,7 @@ class ParkingAvailabilityPipeline(OpenSearchPipeline):
             "mappings":{
                 "properties": {
                     "timestamp": {"type": "date", "format": "epoch_millis"},
-                    "location": {"type": "text", "analyzer": "standard"},
+                    "location": {"type": "keyword"},
                     "daily_available": {"type": "integer"},
                     "daily_free": {"type": "integer"},
                     "subscriber_available": {"type": "integer"},
